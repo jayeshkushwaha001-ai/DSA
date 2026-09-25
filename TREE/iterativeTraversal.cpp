@@ -72,7 +72,7 @@ public:
         vector<int> postorder;
         if (root == nullptr)
             return postorder;
-        stack<TreeNode *> st1 ,st2;
+        stack<TreeNode *> st1, st2;
         st1.push(root);
         while (!st1.empty())
         {
@@ -84,10 +84,83 @@ public:
             if (root->right != nullptr)
                 st1.push(root->right);
         }
-        while(!st2.empty()){
+        while (!st2.empty())
+        {
             postorder.push_back(st2.top()->val);
             st2.pop();
         }
         return postorder;
+    }
+
+    // Iterative Postorder Traversal using 1 Stack
+    vector<int> postorderTraversal(TreeNode *root)
+    {
+        vector<int> postorder;
+        if (root == nullptr)
+            return postorder;
+        stack<TreeNode *> st;
+        TreeNode *curr = root;
+        while (curr != nullptr || !st.empty())
+        {
+            if (curr != nullptr)
+            {
+                st.push(curr);
+                curr = curr->left;
+            }
+            else
+            {
+                TreeNode *temp = st.top()->right;
+                if (temp == nullptr)
+                {
+                    temp = st.top();
+                    st.pop();
+                    postorder.push_back(temp->val);
+                    while (!st.empty() && temp == st.top()->right)
+                    {
+                        temp = st.top();
+                        st.pop();
+                        postorder.push_back(temp->val);
+                    }
+                }
+                else
+                {
+                    curr = temp;
+                }
+            }
+        }
+        return postorder;
+    }
+
+    vector<int> preinposttraversal(TreeNode* root){
+        if(root == nullptr) return ;
+        stack<pair<TreeNode* , int>> st;
+        st.push({root, 1});
+        vector<int> pre , in , post;
+        while(!st.empty()){
+            auto it = st.top();
+            st.pop();
+            if(it.second == 1){
+                pre.push_back(it.first->val);
+                it.second++;
+                st.push(it);
+                if(it.first->left != nullptr){
+                    st.push({it.first->left , 1});
+                }
+            }
+        
+            else if(it.second == 2){
+                in.push_back(it.first->val);
+                it.second++;
+                st.push(it);
+
+                if(it.first->right != nullptr){
+                    st.push({it.first->right , 1});
+                }
+                
+            }
+            else{
+                post.push_back(it.first->val);
+            }
+        }
     }
 };
