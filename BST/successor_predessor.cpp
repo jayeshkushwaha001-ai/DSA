@@ -24,7 +24,7 @@ public:
         {
             if (temp->val >= key)
             {
-                root = root->left;
+                temp = temp->left;
             }
             else
             {
@@ -37,7 +37,7 @@ public:
         {
             if (temp->val <= key)
             {
-                root = root->right;
+                temp = temp->right;
             }
             else
             {
